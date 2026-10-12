@@ -48,7 +48,15 @@ public class Students implements Comparable<Students> {
         System.out.println(list);
         Collections.sort(list, Comparator.comparingInt(s -> s.marks));
         System.out.println(list);
+        Collections.sort(list,new Mycomparator());
+        System.out.println("Sorted by Roll Number:");
+        System.out.println(list);
 
 
 }}
+class Mycomparator implements Comparator<Students>{
+    public int compare(Students s1, Students s2){
+        return Integer.compare(s1.rollno,s2.rollno);
+}}
+
 
