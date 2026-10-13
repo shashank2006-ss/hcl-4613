@@ -60,3 +60,35 @@ public class Stream {
 
 
 }
+/*
+Assignment/
+README.md (your notes ,how to run,test cases)
+.gitignore (*.class,out/,.idea/,.vscode/)
+    src/com/hcl/library/
+main.java
+model/ LibraryItem,Book,MAgazine,DVD,Member,Borrowable
+exception/  LibraryException (base), ItemNotFoundException,ItemNot availableException,borrowlimitexceededexception
+repository/  Repository<T,ID>,InMemoryRepository<t,ID>
+service/ LibraryService
+util/ SEarchCache, CollectionUtils
+No external libraries . compile
+Part1
+
+1.LibraryItems abstract class with private fields id,title,year,available.the id is generated from static counter(starting at 1001).use a constructor with validaton:the title must not be blank and the year must be between 1900 and the current year.throw illegalargumentexception otherwise
+        2.declare abstrct double latefee(int gaysLate) in LibraryItem. Implement it in the subclasses:
+        book ,magazine,dvd
+
+        3.create the interface borrowable with bollean isAvailable(),void borrow(),and void giveBack().LibraryItem
+4. member has id,name,email and list of borrowed items .validate the email(it should have @).use this in constructor and provide at least one overload constructor
+ part 2:
+ 1.Create the exception hierarchy shown in section 3 .LibraryException extends RuntimeException ;the others extend LibraryException ,\.each must carry a meaningful message and support a cause
+ 2.enforce these bussiness rules by throwing your exceptiona;
+ borrowing an item that does not exist:itemnotfoundexception
+ borrowing an item that is already issued:itemnotavailableexception
+ a member borrowing more than threeitems:borrowlimitexceededexception
+ 3.in main ,wrap each menu action in try/catch.catchspecific exceptions first.Use a finally block(or the loop structure
+ 4.implement exportreport(string path) using try-with-resources and bufferedwriter to write all items and their status to a text file. handle ioexception by wrapping it in a libraryexception
+ part3;
+ 1.override equals() and hashcode() in  bloc, ensure two books with the same ISBN cannot be added (libraryitem based on id . in
+
+ */
