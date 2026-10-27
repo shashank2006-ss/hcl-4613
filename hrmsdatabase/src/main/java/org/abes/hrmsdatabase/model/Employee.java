@@ -16,7 +16,8 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(long emp_id, String emp_name, String stack, String designation) {
+    public Employee(long emp_id, String emp_name,
+                    String stack, String designation) {
         this.emp_id = emp_id;
         this.emp_name = emp_name;
         this.stack = stack;
