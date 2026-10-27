@@ -1,27 +1,23 @@
-
 import { useState, useEffect } from 'react';
 
 const UseFetchApi = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          'http://localhost:8080/'
-        );
-        const data = await response.json();
+        const response = await fetch('http://localhost:8080/');
 
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error(`HTTP error: ${response.status}`);
         }
 
-        const jsonData = await response.json();
-        setData(jsonData);
+        const message = await response.text();
+        setData(message);
       } catch (err) {
-        setError(err);
+        setError(err.message);
       } finally {
         setLoading(false);
       }
@@ -30,31 +26,14 @@ const UseFetchApi = () => {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <h2>Loading...</h2>;
-  }
+  if (loading) return <h2>Loading...</h2>;
 
-  if (error) {
-    return <h2>Error: {error.message}</h2>;
-  }
+  if (error) return <h2>Error: {error}</h2>;
 
   return (
     <div>
-      <h2>Fetched Products</h2>
-
-      {data.map((product) => (
-        <div key={product.id}>
-          <h3>{product.title}</h3>
-          <p>Price: ${product.price}</p>
-          <p>{product.description}</p>
-          <img
-            src={product.image}
-            alt={product.title}
-            width="100"
-          />
-          <hr />
-        </div>
-      ))}
+      <h1>HRMS Application</h1>
+      <h2>{data}</h2>
     </div>
   );
 };
