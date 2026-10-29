@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
 const UseFetchApi = () => {
   const [data, setData] = useState('');
   const [loading, setLoading] = useState(true);
@@ -8,7 +10,7 @@ const UseFetchApi = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/');
+        const response = await fetch(`${API_BASE_URL}/v1/user/`);
 
         if (!response.ok) {
           throw new Error(`HTTP error: ${response.status}`);
@@ -17,7 +19,9 @@ const UseFetchApi = () => {
         const message = await response.text();
         setData(message);
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof TypeError
+          ? `Cannot reach the backend at ${API_BASE_URL}. Start the backend and allow requests from http://localhost:5173.`
+          : err.message);
       } finally {
         setLoading(false);
       }
