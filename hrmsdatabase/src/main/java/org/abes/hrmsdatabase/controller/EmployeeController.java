@@ -1,10 +1,10 @@
 package org.abes.hrmsdatabase.controller;
 
-import java.util.List;
-
 import org.abes.hrmsdatabase.model.Employee;
 import org.abes.hrmsdatabase.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,34 +20,47 @@ public class EmployeeController {
         return "Welcome to SpringBoot App development";
     }
 
-    // Register employee
     @PostMapping("/addemp")
     public String addnewEmployee(@RequestBody Employee emp) {
         return employeeService.createnewEmployee(emp);
     }
 
-    // Get all employees
-    @GetMapping("/allemp")
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    @PostMapping("/login")
+    public ResponseEntity<?> login(
+            @RequestParam("admission_no") String admissionNo,
+            @RequestParam("password") String password) {
+        if (admissionNo.isBlank() || password.isBlank()) {
+            return ResponseEntity.badRequest().body("Admission number and password are required");
+        }
+
+        final long parsedAdmissionNo;
+        try {
+            parsedAdmissionNo = Long.parseLong(admissionNo);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Admission number must be numeric");
+        }
+
+        Employee employee = employeeService.authenticate(parsedAdmissionNo, password);
+        if (employee == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid admission number or password");
+        }
+        return ResponseEntity.ok(employee);
     }
 
-    // Find employee by ID
     @GetMapping("/findbyid/{empid}")
-    public Employee getEmpById(@PathVariable long empid) {
+    public Employee getEmpById(@PathVariable("empid") long empid) {
         return employeeService.getEmployeeById(empid);
     }
 
-    // Delete employee by ID
     @DeleteMapping("/deletebyid/{empid}")
-    public String deleteById(@PathVariable long empid) {
+    public String deleteById(@PathVariable("empid") long empid) {
         return employeeService.deleteEmployeeById(empid);
     }
 
-    // Update employee
     @PutMapping("/updatebyid/{empid}")
     public String updateById(
-            @PathVariable long empid,
+            @PathVariable("empid") long empid,
             @RequestBody Employee emp) {
         return employeeService.updateEmployeeById(empid, emp);
     }

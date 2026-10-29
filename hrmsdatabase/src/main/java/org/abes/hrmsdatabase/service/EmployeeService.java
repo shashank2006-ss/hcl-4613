@@ -15,12 +15,25 @@ public class EmployeeService {
 
     // Register a new employee
     public String createnewEmployee(Employee emp) {
-        if (employeeRepository.existsById(emp.getEmp_id())) {
-            return "Employee ID already exists: " + emp.getEmp_id();
+        if (emp == null || emp.getPassword() == null || emp.getPassword().isBlank()) {
+            return "A password is required to register an employee";
+        }
+        if (employeeRepository.existsById(emp.getEmpId())) {
+            return "Employee ID already exists: " + emp.getEmpId();
         }
 
+        emp.setPasswordHash(PasswordHasher.hash(emp.getPassword()));
+        emp.setPassword(null);
         employeeRepository.save(emp);
         return "Employee is added successfully";
+    }
+
+    public Employee authenticate(long admissionNo, String password) {
+        Employee employee = employeeRepository.findById(admissionNo).orElse(null);
+        if (employee == null || !PasswordHasher.matches(password, employee.getPasswordHash())) {
+            return null;
+        }
+        return employee;
     }
 
     // Get all employees
@@ -52,7 +65,7 @@ public class EmployeeService {
             return "Employee is not registered with id " + empid;
         }
 
-        existingEmp.setEmp_name(updatedEmp.getEmp_name());
+        existingEmp.setEmpName(updatedEmp.getEmpName());
         existingEmp.setStack(updatedEmp.getStack());
         existingEmp.setDesignation(updatedEmp.getDesignation());
 
