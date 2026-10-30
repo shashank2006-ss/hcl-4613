@@ -1,0 +1,10 @@
+#Backend
+Backend/target
+.idea
+*.iml
+
+#Frontend
+Frontend/node_modules
+Frontend/dist
+
+.env
