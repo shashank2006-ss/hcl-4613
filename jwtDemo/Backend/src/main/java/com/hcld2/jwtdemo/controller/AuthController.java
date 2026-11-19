@@ -32,7 +32,7 @@ public class AuthController {
                     Map.of("error", "username is already in use")
             );
         }
-        users.save(new User(req.username(),encoder.encode(req.password()));
+        users.save(new User(req.username(), encoder.encode(req.password())));
         return ResponseEntity.ok(Map.of("message", "user registered successfully"));
     }
     @PostMapping("/login")

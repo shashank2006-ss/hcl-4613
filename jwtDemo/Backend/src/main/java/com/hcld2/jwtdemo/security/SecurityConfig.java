@@ -36,10 +36,19 @@ public class SecurityConfig {
                 .headers(h -> h.frameOptions(
                         f->f.sameOrigin()))
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers(
-                                        "/api/v1/**","/h2-console/**","/error").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/api/v1/posts/**").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/v1/posts/**").authenticated()
+                        auth -> auth
+                                .requestMatchers(
+                                        "/api/v1/auth/**",
+                                        "/h2-console/**",
+                                        "/error",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html",
+                                        "/v3/api-docs/**",
+                                        "/v3/api-docs.yaml"
+                                ).permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/posts/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/posts/**").authenticated()
                                 .anyRequest().authenticated()
 
                 )
@@ -64,7 +73,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedHeaders(List.of("http://localhost:5173"));
+        cfg.setAllowedOrigins(List.of("http://localhost:5173"));
         cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
 
