@@ -1,16 +1,21 @@
- export const greet = (name) => {
+export const greet = (name) => {
   return `Hello, ${name}!`;
 };
 
-
 export const greetInHindi = (name) => {
-  return `नमस्ते, ${name}!`;
+  return `Namaste, ${name}!`;
 };
-export const processOrder = (data, dependencies) => {
-  const paymentInfo = dependencies.processPayment(data, dependencies);
-  return  paymentInfo;
+
+export const processOrder = (data, dependecy) => {
+  // apply logic
+  // call payment gateway
+  const paymentInfo = dependecy.processPayment(data.amount);
+  return paymentInfo;
 };
+
+// implementation
 const processPayment = (amount) => {
-  console.log(`i am original process payment function`);
-  return { id: "123", amount };
+  // API Call to external payment gateway
+  console.log("i am original processPayment");
+  return { id: 123, amount };
 };

@@ -1,12 +1,5 @@
+const App = () => {
+  return <h1>Jesting in React</h1>;
+};
 
-import React from 'react'
-
-function App() {
-  return (
-    <div>
-      
-    </div>
-  )
-}
-
-export default App
+export default App;
